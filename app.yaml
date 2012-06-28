@@ -1,0 +1,18 @@
+application: usbuild-gae
+version: 1
+runtime: python27
+api_version: 1
+threadsafe: true
+
+handlers:
+  
+- url: /disk/content/.*
+  script: main.app  
+
+- url: /(.*\.(gif|png|jpg|js|css))
+  static_files: static/\1
+  upload: static/(.*\.(gif|png|jpg|js|css))
+  
+  
+- url: /.*
+  script: main.app

@@ -1,0 +1,107 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<meta http-equiv="content-type" content="text/html; charset=utf-8">
+		<title>UsNote 简单记事本</title>
+		<link rel="stylesheet" href="../bootstrap/css/bootstrap.min.css"
+		type="text/css" media="screen" charset="utf-8">
+		</script>
+
+	</head>
+	<body>
+		<div class="container">
+			<p>
+				<h1>UsDisk 简易网盘</h1>
+			</p>
+			<div id = "message"></div>
+			<form class="well form-inline" action="{{ upload_url }}" method="POST" enctype="multipart/form-data" name="upload_form" id="upload_form">
+				<input class="input-file" id="fileInput" type="file" name="file" />
+				<button type="submit" class="btn btn-primary">
+					提交
+				</button>
+			</form>
+			<footer>
+				<p>
+					&copy; 有师必有得
+				</p>
+			</footer>
+		</div>
+		<script type="text/javascript">
+			var base = "http://" + window.location.host + "/disk/";
+			var dropbox = document.getElementById("upload_form")
+			dropbox.addEventListener("submit", commit, false);
+			dropbox.addEventListener("dragenter", dragEnter, false);
+			dropbox.addEventListener("dragleave", dragExit, false);
+			dropbox.addEventListener("drop", drop, false);
+			function showMessage(txt) {
+				var box = document.getElementById("message");
+				var obj;
+				try {
+					obj = eval('(' + txt + ')');
+				} catch(Exception){
+					
+				}
+				if(obj != undefined && typeof obj['url'] != undefined) {
+					box.innerHTML = '<div class="alert alert-success">存储成功， 地址为<a href=\"' + obj['url'] + '\">' + obj['url'] + '</a></div>';
+				}
+				else{
+					box.innerHTML = '<div class="alert alert-fail">上传失败</div>';
+				}
+			}
+
+			function commit(evt) {
+				evt.stopPropagation();
+				evt.preventDefault();
+				if(dropbox.file.value.length <= 0) return;
+				var formData = new FormData(dropbox);
+				var xhr = new XMLHttpRequest();
+				var box = document.getElementById("message");
+				box.innerHTML = '<div class="progress progress-striped active"><div class="bar" style="width: 100%;"></div></div>';
+				xhr.open("POST", base + "upload", true);
+				xhr.send(formData);
+				xhr.onreadystatechange = function() {
+					if(xhr.readyState == 4) {
+						if(xhr.status == 200)
+							showMessage(xhr.responseText);
+						else 
+							showMessage("");
+					}
+				}
+			}
+
+			function dragEnter(evt) {
+				dropbox.setAttribute("style", "background-color: #e5e5e5;")
+			}
+
+			function dragExit(evt) {
+				dropbox.setAttribute("style", "background-color: whiteSmoke;")
+			}
+
+			function drop(evt) {
+				evt.stopPropagation();
+				evt.preventDefault();
+				var box = document.getElementById("message");
+				box.innerHTML = '<div class="progress progress-striped active"><div class="bar" style="width: 100%;"></div></div>';
+				var files = evt.dataTransfer.files;
+				var count = files.length;
+				if(count <= 0)
+					return;
+				var file = files[0];
+				var xhr = new XMLHttpRequest();
+				var formData = new FormData();
+				xhr.open("POST", base + "upload", true);
+				formData.append("file", file);
+				xhr.send(formData);
+				xhr.onreadystatechange = function() {
+					if(xhr.readyState == 4) {
+						if(xhr.status == 200)
+							showMessage(xhr.responseText);
+						else 
+							showMessage("");
+					}
+				}
+				dropbox.setAttribute("style", "background-color: whiteSmoke;")
+			}
+		</script>
+	</body>
+</html>

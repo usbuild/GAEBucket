@@ -1,0 +1,82 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<meta http-equiv="content-type" content="text/html; charset=utf-8">
+		<title>UsNote 简单记事本</title>
+		<link rel="stylesheet" href="../bootstrap/css/bootstrap.min.css"
+		type="text/css" media="screen" charset="utf-8">
+	</head>
+	<body>
+		<div class="container">
+			<p>
+				<h1>Usbuild的自留地</h1>
+			</p>
+			<ul>
+				<li><a href="/note">记事本</a></li>
+				<li><a href="/disk">网盘</a></li>
+			</ul>
+			<footer>
+				<p>
+					&copy; 有师必有得
+				</p>
+			</footer>
+		</div>
+	</body>
+
+	<script charset="utf-8" src="../kindeditor/kindeditor-min.js"></script>
+	<script charset="utf-8" src="../kindeditor/lang/zh_CN.js"></script>
+	<script type="text/javascript">
+	var editor;
+		KindEditor.ready(function(K) {
+			editor = K.create('#content', {
+				uploadJson : '../disk/upload',
+				allowFileManager : false
+			});
+		});
+		function save() {
+
+			var box = document.getElementById("message");
+			box.innerHTML = "";
+			var content = document.getElementById("content");
+			var xhr = new XMLHttpRequest();
+			var title = document.getElementById("title").value;
+			if(!/^\w+$/g.test(title)) {
+				box.innerHTML = '<div class="alert alert-error">标题格式不正确</div>';
+				return;
+			}
+			var content = editor.html();
+			var base = "http://" + window.location.host + "/note/";
+			var url = base + "view/" + title;
+			xhr.open("POST", base + "save", true);
+			xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded;charset=UTF-8");
+			xhr.send("title=" + encodeURIComponent(title) + "&content=" + decodeURIComponent(content));
+			xhr.onreadystatechange = function() {
+				if(xhr.readyState == 4 && xhr.status == 200) {
+
+					var box = document.getElementById("message");
+					var txt = xhr.responseText;
+					var suc = (txt == 'ok' ? true : false);
+					box.innerHTML = '<div class="alert ' + ( suc ? "alert-success" : "alert-error") + '">' + ( suc ? "存储成功， 地址为<a href=\"" + url + "\">" + url + "</a>" : "标题已被占用，请重新输入") + "</div>";
+				}
+			}
+		}
+
+		function preview() {
+			var form1 = document.getElementById("form1");
+			var prevdiv = document.getElementById("preview");
+			var prev_content = document.getElementById("prev_content");
+			var content = document.getElementById("content");
+			prev_content.innerHTML = editor.html();
+			form1.setAttribute("style", "display: none;");
+			prevdiv.setAttribute("style", "display: blocked;");
+		}
+
+		function edit() {
+			var form1 = document.getElementById("form1");
+			var prevdiv = document.getElementById("preview");
+			form1.setAttribute("style", "display: blocked;");
+			prevdiv.setAttribute("style", "display: none;");
+		}
+	</script>
+
+</html>
