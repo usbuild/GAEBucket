@@ -13,8 +13,24 @@
 			<p>
 				<h1>UsDisk 简易网盘</h1>
 			</p>
+			<table class="table">
+				<thead>
+					<tr>
+						<th>
+							文件列表
+						</th>
+					</tr>
+				</thead>
+			{% for item in file_list %}
+			<tr><td><a href="{{ save_url }}{{ item }}">{{ item }}</a></td>
+				<td>
+					<a class="btn btn-danger" href="{{ del_url }}{{ item }}" target="_blank" onclick="return removeFile(this);">删除</a>
+				</td>
+			</tr>
+			{% endfor %}
+			</table>
 			<div id = "message"></div>
-			<form class="well form-inline" action="{{ upload_url }}" method="POST" enctype="multipart/form-data" name="upload_form" id="upload_form">
+			<form class="well form-inline" action="{{ upload_url }}" method="post" enctype="multipart/form-data" name="upload_form" id="upload_form">
 				<input class="input-file" id="fileInput" type="file" name="file" />
 				<button type="submit" class="btn btn-primary">
 					提交
@@ -33,6 +49,17 @@
 			dropbox.addEventListener("dragenter", dragEnter, false);
 			dropbox.addEventListener("dragleave", dragExit, false);
 			dropbox.addEventListener("drop", drop, false);
+			function removeFile(e) {
+				var xhr = new XMLHttpRequest();
+				xhr.open("GET", e.href, true);
+				xhr.send();
+				xhr.onreadystatechange = function(){
+					if(xhr.readyState == 4 && xhr.status == 200) {
+						window.location = window.location;
+					}
+				}
+				return false;
+			}
 			function showMessage(txt) {
 				var box = document.getElementById("message");
 				var obj;
@@ -42,7 +69,8 @@
 					
 				}
 				if(obj != undefined && typeof obj['url'] != undefined) {
-					box.innerHTML = '<div class="alert alert-success">存储成功， 地址为<a href=\"' + obj['url'] + '\">' + obj['url'] + '</a></div>';
+					//box.innerHTML = '<div class="alert alert-success">存储成功， 地址为<a href=\"' + obj['url'] + '\">' + obj['url'] + '</a></div>';
+					window.location = window.location;
 				}
 				else{
 					box.innerHTML = '<div class="alert alert-fail">上传失败</div>';

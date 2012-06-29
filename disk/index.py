@@ -14,6 +14,12 @@ from google.appengine.ext.webapp import template
 class MainHandler(webapp.RequestHandler):
     def get(self):
         data = {}
+        q = KeyValue.all()
+        data["file_list"] = []
+        data["save_url"] = self.request.host_url + '/disk/content/'
+        data["del_url"] =self.request.host_url + '/disk/delete?id=' 
+        for s in q:
+            data["file_list"].append(s.key_index)
         data["upload_url"] = self.request.host_url + "/disk/upload"#upload_url
         path = 'disk/index.html'
         self.response.out.write(template.render(path, data))
@@ -57,7 +63,18 @@ class UploadHandler(blobstore_handlers.BlobstoreUploadHandler):
             result["message"] = "SUCCESS" 
             self.response.write(json.dumps(result, separators=(',',':')))
             return
-
+class DeleteHandler(webapp.RequestHandler):
+    def get(self):
+        id = self.request.get('id')
+        if not id:
+            self.response.set_status(404)
+        q = KeyValue.all()
+        q.filter("key_index", id)
+        for s in q:
+            blob_info = blobstore.BlobInfo.get(s.value)
+            blob_info.delete()
+        db.delete(q)
+        
 class ServeHandler(blobstore_handlers.BlobstoreDownloadHandler):
     def get(self, resource):
         resource = str(urllib.unquote(resource))
