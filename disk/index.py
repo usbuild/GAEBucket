@@ -43,12 +43,17 @@ class UploadHandler(blobstore_handlers.BlobstoreUploadHandler):
 
 
     def post(self):
+        result = {}
         for name, fieldStorage in self.request.POST.items():
             if type(fieldStorage) is unicode:
                 continue
-            result = {}
-            result['name'] = str(random.randint(0, 1000)) + re.sub(r'^.*\\', '',
-                fieldStorage.filename)
+            name = re.sub(r'^.*\\', '', fieldStorage.filename)
+            q = KeyValue.all()
+            q.filter("key_index =", name)
+            if q.count() > 0 :
+                result['name'] = str(random.randint(0, 1000)) + name
+            else:
+                result['name'] = name
             result['type'] = fieldStorage.type
             result['size'] = self.get_file_size(fieldStorage.file)
 
@@ -61,15 +66,16 @@ class UploadHandler(blobstore_handlers.BlobstoreUploadHandler):
             result["url"] = self.request.host_url + '/disk/content/%s' % key
             result["error"] = 0
             result["message"] = "SUCCESS" 
-            self.response.write(json.dumps(result, separators=(',',':')))
-            return
+        self.response.write(json.dumps(result, separators=(',',':')))
+        return
+
 class DeleteHandler(webapp.RequestHandler):
     def get(self):
         id = self.request.get('id')
         if not id:
             self.response.set_status(404)
         q = KeyValue.all()
-        q.filter("key_index", id)
+        q.filter("key_index = ", id)
         for s in q:
             blob_info = blobstore.BlobInfo.get(s.value)
             blob_info.delete()

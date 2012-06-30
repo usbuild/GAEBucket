@@ -1,7 +1,6 @@
 import webapp2
 import note.index
 import disk.index
-import blog.index
 import index
 
 url_mapping = [
@@ -14,6 +13,5 @@ url_mapping = [
              ('/disk/upload', disk.index.UploadHandler),
              ('/disk/delete', disk.index.DeleteHandler),
              ('/disk/content/([^/]+)?', disk.index.ServeHandler),
-             ('/blog/?', blog.index.Index),
              ]
 app = webapp2.WSGIApplication(url_mapping, debug=True)
