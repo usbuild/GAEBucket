@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>用户登录</title>
+</head>
+<body>
+<div>
+<h1>用户登录</h1>
+	<form action="{{ submit_url }}" method="POST"  id="form">
+		<input name="username" type="text" /><br /> <input name="password"
+			type="password" /> <br /> <input type="submit" value="提交" /><br />
+	</form>
+</div>
+<script type="text/javascript">
+	document.getElementById("form").addEventListener("submit", commit, false);
+	function commit(evt) {
+		evt.stopPropagation();
+		evt.preventDefault();
+		var e = document.getElementById("form");
+		var username = e.username.value;
+		var password = e.password.value;
+		if(/^\w+$/g.test(username) && /^.+$/g.test(password)) {
+			var xhr = new XMLHttpRequest();
+			var formData = new FormData(form);
+			xhr.open("POST", "{{ submit_url }}", true);
+			xhr.send(formData);
+			xhr.onreadystatechange = function(){
+				if(xhr.readyState == 4 && xhr.status  == 200) {
+					var obj = eval("("+xhr.responseText+")");
+					if(obj.success == 1) {
+						window.location = "http://localhost:8080/blog/admin";
+					} else {
+						alert("登录失败");
+					}
+				}
+			}
+		} else {
+			alert("用户名或密码格式不正确");
+		}
+	}
+	</script>
+</body>
+</html>

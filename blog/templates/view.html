@@ -3,7 +3,7 @@
 <head>
     <meta http-equiv="content-type" content="text/html; charset=utf-8">
     <title>Usbuild's 网络日志</title>
-    <link rel="stylesheet" href="../bootstrap/css/bootstrap.min.css" type="text/css" media="screen" charset="utf-8">
+    <link rel="stylesheet" href="../../bootstrap/css/bootstrap.min.css" type="text/css" media="screen" charset="utf-8">
     <style type="text/css">
     	body {
     		padding-top: 60px;
@@ -33,15 +33,26 @@
     </div>
     
     <div class="container">
-        {% for item in articles %}
-        <div class="well">
-        <h3><a href="{{ view_url }}{{ item.id }}">{{ item.title }}</a></h3>
-        </div>
-        {% endfor %}
+    	<div class="page-header">
+		  <h1>{{ article.title }}</h1>
+		</div>
+		<div class="well">
+			<div class="alert alert-info">本文由<span class="label">{{ article.author }}</span>于<span class="label">{{ article.datestring }}</span>发表</div>
+			{{ article.content }}
+			<div class="alert alert-info">
+        标签:{% for tag in  article.tags%}
+        	<span class="label label-info">{{ tag }}</span>
+        	{% endfor %}
+        	&nbsp;&nbsp;&nbsp;
+        分类:{% for item in  article.catalog%}
+        	<span class="label label-info">{{ item }}</span>
+        	{% endfor %}
+        	</div>
+		</div>
       <footer>
         <p>&copy; 有师必有得</p>
       </footer>
     </div> 
 </body>
-<script type="text/javascript" charset="utf-8" src="../bootstrap/js/bootstrap.min.js"></script>
+<script type="text/javascript" charset="utf-8" src="../../bootstrap/js/bootstrap.min.js"></script>
 </html>

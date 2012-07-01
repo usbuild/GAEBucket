@@ -13,9 +13,6 @@ handlers:
 - url: /disk/content/.*
   script: main.app  
 
-- url: /blog(/?|/.*)
-  script: blog.main.app
-  
 - url: /(.*\.(gif|png|jpg|js|css))
   static_files: static/\1
   upload: static/(.*\.(gif|png|jpg|js|css))
