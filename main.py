@@ -27,6 +27,9 @@ url_mapping = [
              ('/blog/login/?', blog.index.LoginPage),
              ('/blog/login/login', blog.index.LoginHander),
              ('/blog/newpost/?', blog.index.NewPost),
+             ('/blog/edit/\d+?', blog.index.Edit),
+             ('/blog/delete/\d+?', blog.index.Delete),
+             ('/blog/manage/?', blog.index.Manage),
              ('/blog/post', blog.index.Post),
              ('/blog/article/\d+', blog.index.View),
              ]

@@ -20,7 +20,7 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </a>
-          <a class="brand" href="#">Usblog</a>
+          <a class="brand" href="{{ base_url }}">Usblog</a>
           <div class="nav-collapse">
             <ul class="nav">
               <li class="active"><a href="#">主页</a></li>
@@ -37,7 +37,7 @@
 		  <h1>{{ article.title }}</h1>
 		</div>
 		<div class="well">
-			<div class="alert alert-info">本文由<span class="label">{{ article.author }}</span>于<span class="label">{{ article.datestring }}</span>发表</div>
+			<div class="alert alert-info">本文由<span class="label">{{ article.author }}</span>于<span class="label">{{ article.date.strftime("%d/%m/%y %H:%M") }}</span>发表</div>
 			{{ article.content }}
 			<div class="alert alert-info">
         标签:{% for tag in  article.tags%}
@@ -48,11 +48,23 @@
         	<span class="label label-info">{{ item }}</span>
         	{% endfor %}
         	</div>
+        	<div id="disqus_thread"></div>
 		</div>
       <footer>
         <p>&copy; 有师必有得</p>
       </footer>
     </div> 
 </body>
-<script type="text/javascript" charset="utf-8" src="../../bootstrap/js/bootstrap.min.js"></script>
+        <script type="text/javascript">
+            /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+            var disqus_shortname = 'usbuildlog'; // required: replace example with your forum shortname
+
+            /* * * DON'T EDIT BELOW THIS LINE * * */
+            (function() {
+                var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+                dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+                (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+            })();
+        </script>
+        <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
 </html>

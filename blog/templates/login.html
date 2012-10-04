@@ -6,7 +6,7 @@
 <body>
 <div>
 <h1>用户登录</h1>
-	<form action="{{ submit_url }}" method="POST"  id="form">
+	<form action="{{ login_url }}" method="POST"  id="form">
 		<input name="username" type="text" /><br /> <input name="password"
 			type="password" /> <br /> <input type="submit" value="提交" /><br />
 	</form>
@@ -22,13 +22,13 @@
 		if(/^\w+$/g.test(username) && /^.+$/g.test(password)) {
 			var xhr = new XMLHttpRequest();
 			var formData = new FormData(form);
-			xhr.open("POST", "{{ submit_url }}", true);
+			xhr.open("POST", "{{ login_url }}", true);
 			xhr.send(formData);
 			xhr.onreadystatechange = function(){
 				if(xhr.readyState == 4 && xhr.status  == 200) {
 					var obj = eval("("+xhr.responseText+")");
 					if(obj.success == 1) {
-						window.location = "http://localhost:8080/blog/admin";
+						window.location = "{{ post_page }}";
 					} else {
 						alert("登录失败");
 					}

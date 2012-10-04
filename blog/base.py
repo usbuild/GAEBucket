@@ -2,7 +2,8 @@ from webapp2_extras import jinja2,sessions
 import webapp2
 
 class AppConfig:
-    baseurl = "http://localhost:8080/blog/"
+#    baseurl = "http://localhost:8080/blog/"
+    baseurl = "http://tools.lecoding.com/blog/"
     
 class BaseHandler(webapp2.RequestHandler):
     @webapp2.cached_property
