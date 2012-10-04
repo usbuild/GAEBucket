@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module type="PYTHON_MODULE" version="4">
+  <component name="FacetManager">
+    <facet type="google-appengine-python" name="Google App Engine (Python)">
+      <configuration>
+        <option name="rootFolder" value="D:\User\Documents\WorkSpace\Python\GAEBucket" />
+        <option name="sdkFolder" value="D:\Programs\google_appengine" />
+        <option name="templatesFolder" value="" />
+        <option name="email" value="njuzhangqichao@gmail.com" />
+        <option name="gp" value="df9bdf93df93df9bdf9bdf9adf98df98dfcddfc5dfc5dfcddfc6dfcf" />
+      </configuration>
+    </facet>
+  </component>
+  <component name="NewModuleRootManager">
+    <content url="file://$MODULE_DIR$" />
+    <orderEntry type="inheritedJdk" />
+    <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="library" name="Google App Engine SDK" level="project" />
+  </component>
+</module>
+
