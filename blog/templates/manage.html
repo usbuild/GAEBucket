@@ -1,0 +1,151 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>UsBlog Management</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="">
+<meta name="author" content="">
+
+<!-- Le styles -->
+<link href="../bootstrap/css/bootstrap.css" rel="stylesheet">
+<style type="text/css">
+body {
+	padding-top: 60px;
+	padding-bottom: 40px;
+}
+
+.sidebar-nav {
+	padding: 9px 0;
+}
+</style>
+<link href="../bootstrap/css/bootstrap-responsive.css" rel="stylesheet">
+
+<!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
+<!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+<!-- Le fav and touch icons -->
+<link rel="shortcut icon" href="../assets/ico/favicon.ico">
+<link rel="apple-touch-icon-precomposed" sizes="144x144"
+	href="../bootstrap/ico/apple-touch-icon-144-precomposed.png">
+<link rel="apple-touch-icon-precomposed" sizes="114x114"
+	href="../bootstrap/ico/apple-touch-icon-114-precomposed.png">
+<link rel="apple-touch-icon-precomposed" sizes="72x72"
+	href="../bootstrap/ico/apple-touch-icon-72-precomposed.png">
+<link rel="apple-touch-icon-precomposed"
+	href="../bootstrap/ico/apple-touch-icon-57-precomposed.png">
+</head>
+
+<body>
+
+	<div class="navbar navbar-fixed-top">
+		<div class="navbar-inner">
+			<div class="container-fluid">
+				<a class="btn btn-navbar" data-toggle="collapse"
+					data-target=".nav-collapse"> <span class="icon-bar"></span> <span
+					class="icon-bar"></span> <span class="icon-bar"></span>
+				</a> <a class="brand" href="{{ base_url }}">Usblog 管理程序</a>
+				<div class="btn-group pull-right">
+					<a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
+						<i class="icon-user"></i> {{ username }} <span class="caret"></span>
+					</a>
+					<ul class="dropdown-menu">
+						<li><a href="#">个人信息</a></li>
+						<li class="divider"></li>
+						<li><a href="#">登出</a></li>
+					</ul>
+				</div>
+				<!--
+          <div class="nav-collapse">
+            <ul class="nav">
+              <li class="active"><a href="#">Home</a></li>
+              <li><a href="#about">About</a></li>
+              <li><a href="#contact">Contact</a></li>
+            </ul>
+          </div><!--/.nav-collapse -->
+			</div>
+		</div>
+	</div>
+
+	<div class="container-fluid">
+		<div class="row-fluid">
+			<div class="span2">
+				<div class="well sidebar-nav">
+					<ul class="nav nav-list">
+						<li class="nav-header">文章管理</li>
+						<li><a href="{{ post_page }}">写文章</a></li>
+						<li class="active"><a href="{{ manage_url }}">管理文章</a></li>
+					</ul>
+				</div>
+				<!--/.well -->
+			</div>
+			<!--/span-->
+			<div class="span10">
+				<div class="hero-unit">
+					<table class="table">
+						<tr>
+							<th>编号</th>
+							<th>标题</th>
+							<th>作者</th>
+							<th>日期</th>
+							<th>标签</th>
+							<th>分类</th>
+							<th>操作</th>
+						</tr>
+						{% for article in articles %}
+						<tr>
+							<td>{{ article.id }}</td>
+							<td>{{ article.title }}</td>
+							<td>{{ article.author }}</td>
+							<td>{{ article.date.strftime("%d/%m/%y %H:%M") }}</td>
+							<td>{{ ",".join(article.tags) }}</td>
+							<td>{{ ",".join(article.catalog) }}</td>
+							<td>
+								<div class="btn-group">
+									<a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
+										操作 <span class="caret"></span>
+									</a>
+									<ul class="dropdown-menu">
+										<li><a href="{{ edit_page }}{{ article.id }}">修改</a></li>
+										<li><a href="{{ delete_url }}{{ article.id }}" onclick="return unlink(this);">删除</a></li>
+									</ul>
+								</div>
+
+							</td> {% endfor %}
+						</tr>
+					</table>
+				</div>
+				<!-- herounit -->
+			</div>
+			<!--/span-->
+		</div>
+		<!--/row-->
+
+		<hr>
+
+		<footer>
+			<p>&copy; 有师必有得</p>
+		</footer>
+
+	</div>
+	<!--/.fluid-container-->
+
+	<!-- Le javascript
+    ================================================== -->
+	<!-- Placed at the end of the document so the pages load faster -->
+	<script src="../jquery-1.7.2.min.js"></script>
+	<script src="../bootstrap/js/bootstrap.min.js"></script>
+	<script type="text/javascript">
+	function unlink(e) {
+		$.get(e.href, function(){
+			var tr = e.parentNode.parentNode.parentNode.parentNode.parentNode;
+			tr.parentNode.removeChild(tr);
+		});
+		return false;
+	}
+	</script>
+  </body>
+</html>
